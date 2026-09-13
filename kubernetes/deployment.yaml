@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: android-emulator
+  namespace: android-emulator
+  labels:
+    app.kubernetes.io/name: android-emulator
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: android-emulator
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: android-emulator
+    spec:
+      nodeSelector:
+        emulator.k8s.io/kvm: "true"
+      terminationGracePeriodSeconds: 30
+      containers:
+        - name: emulator
+          image: ghcr.io/holydanchik/android-emulator-on-kubernetes:latest
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            privileged: true
+          env:
+            - name: EMULATOR_DEVICE
+              value: Samsung Galaxy S10
+            - name: WEB_VNC
+              value: "false"
+            - name: APPIUM
+              value: "true"
+          ports:
+            - name: appium
+              containerPort: 4723
+          resources:
+            requests:
+              cpu: "2"
+              memory: 4Gi
+            limits:
+              cpu: "4"
+              memory: 8Gi
+          readinessProbe:
+            exec:
+              command:
+                - /bin/bash
+                - -ec
+                - curl --fail --silent http://127.0.0.1:4723/status >/dev/null || curl --fail --silent http://127.0.0.1:4723/wd/hub/status >/dev/null
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 18
+          volumeMounts:
+            - name: kvm
+              mountPath: /dev/kvm
+      volumes:
+        - name: kvm
+          hostPath:
+            path: /dev/kvm
+            type: CharDevice
