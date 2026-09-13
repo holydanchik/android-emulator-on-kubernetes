@@ -1,5 +1,7 @@
 # Android Emulator on Kubernetes
 
+![Android Emulator on Kubernetes architecture](docs/assets/project-cover.png)
+
 A reproducible, headless Android emulator environment running in Kubernetes with KVM acceleration, Appium 2 and UiAutomator2.
 
 > This repository is an independent reference implementation built with public components. It contains no employer source code, application packages, credentials, internal endpoints or production configuration.
