@@ -1,8 +1,5 @@
 # Android Emulator on Kubernetes
 
-[![Validate](https://github.com/holydanchik/android-emulator-on-kubernetes/actions/workflows/validate.yml/badge.svg)](https://github.com/holydanchik/android-emulator-on-kubernetes/actions/workflows/validate.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-
 A reproducible, headless Android emulator environment running in Kubernetes with KVM acceleration, Appium 2 and UiAutomator2.
 
 > This repository is an independent reference implementation built with public components. It contains no employer source code, application packages, credentials, internal endpoints or production configuration.
